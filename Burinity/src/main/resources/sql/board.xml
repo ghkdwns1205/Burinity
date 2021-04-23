@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+	<select id="FreeBoardList"  parameterType="bu.board.BoardSearchVO" resultType="bu.board.BoardVO" >
+
+ 	Select num.*  from (Select @rownum:=@rownum+1 as rownum, n.* 
+				 from(select @rownum:=0)tmp, (select *  from freeboard  where flag = 'Y'   and 
+				 ${searchType} like CONCAT('%',#{searchKeyword},'%')   order by regdate desc)n)num
+
+		 <if test="rowStart != null">
+             LIMIT ${rowStart-1}, 10
+         </if>
+         
+	</select>
+
+	<select id="BoardListCount"  parameterType="bu.board.BoardSearchVO" resultType="Integer" >
+
+  	Select count(num.number) as count 
+				from (Select @rownum:=@rownum+1 as num , n.* from(select *
+				    From freeboard where  ${searchType} like CONCAT('%',#{searchKeyword},'%')
+                    order by regdate desc)n    Where (@rownum:=0)=0) num 
+        
+       
+ 
+	</select>
+
+	<select id="fBoardRead"  parameterType="bu.board.BoardVO" resultType="bu.board.BoardVO" >
+
+  	select * from freeboard where number = ${number}
+        
+       
+ 
+	</select>
+
+	<select id="fBoardComment"  parameterType="bu.board.BoardVO" resultType="bu.comment.CommentVO" >
+
+  	select * from fdcomment where cnumber = ${number}
+        
+	</select>
+
+ 	<select id="interestCheck" resultType="Integer" parameterType="bu.board.BoardVO">
+         select count(*) from Interest where number = ${number} and nickname = #{nickname}
+    </select> 
+    
+ 	<select id="interestInsert"  parameterType="bu.board.BoardVO">
+        insert into Interest (number,nickname) values (${number},#{nickname})
+    </select> 
+    
+    <select id="interestUpdate"  parameterType="bu.board.BoardVO">
+        Update freeboard set likes = likes+1 where number = ${number}
+    </select> 
+    
+    <select id="fboardHits"  parameterType="bu.board.BoardVO">
+        Update freeboard set hits = hits+1 where number = ${number}
+    </select> 
+    
+    <select id="FBoardWriteEnd"  parameterType="bu.board.BoardVO">
+      insert into ${table} (nickname, title, content) values (#{nickname}, #{title}, #{content})
+    </select> 
+
+<!-- 	<insert id="insertBoard" parameterType="bu.board.BoardVO" > -->
+<!--         <selectKey resultType="String" keyProperty="number" order="BEFORE"> -->
+<!--             SELECT IFNULL(MAX(number),0)+1 FROM freeboard -->
+<!--         </selectKey> -->
+    
+<!--         INSERT INTO freeboard(number, nickname, , title, content, hits, likes) -->
+<!--         VALUES (${number}, #{nickname}, #{title}, #{content}, ${hits}, ${likes}) -->
+<!--     </insert> -->
+    
+<!--       <insert id="insertBoardFile" parameterType="gu.common.FileVO" > -->
+<!--         INSERT INTO TBL_BOARDFILE (BRDNO, FILENAME, REALNAME, FILESIZE) -->
+<!--         VALUES (#{parentPK}, #{filename}, #{realname}, #{filesize}) -->
+<!--     </insert> -->
+    
+</mapper>

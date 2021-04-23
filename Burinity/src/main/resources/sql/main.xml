@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="main">
+
+<select id="InsertBunyang"  parameterType="bu.main.BunyangVO" >
+
+ insert into bunyang 
+ ( businessSC, productType, businessStage, apartmentName, city, county, dong,
+  totalNoH, salesTime, moveInTime, subscriptionAP, contractPeriod, announcementDoW, minimumArea,
+   minimumAreaT, maximumArea, maximumAreaT, minimumSP, maximumSP, announcementDate, resalePeriod) 
+     		 values
+      (#{businessSC}, #{productType}, #{businessStage}, #{apartmentName}, #{city}, #{county}, #{dong},
+    #{totalNoH}, #{salesTime}, #{moveInTime}, #{subscriptionAP}, #{contractPeriod}, #{announcementDoW},
+     #{minimumArea}, #{minimumAreaT}, #{maximumArea}, #{maximumAreaT}, #{minimumSP}, #{maximumSP},
+      #{announcementDate}, #{resalePeriod})
+
+</select>
+
+<select id="getAJiyuk"  parameterType="bu.main.BunyangVO" resultType="bu.main.BunyangVO">
+
+		select * from AJiyuk where CityNumber = ${allJiyuk[0]}
+
+</select>
+
+
+<select id="getAJiyukList"  parameterType="bu.main.BunyangVO" resultType="bu.main.BunyangVO">
+
+		select * from bunyang where City = #{cityName} 
+ 
+</select>
+
+<select id="getPartJiyuk1"  parameterType="bu.main.BunyangVO" resultType="bu.main.BunyangVO">
+
+			select * from bunyang
+				where City = (select allJiyuk from jiyuk where JiyukNumber=${jiyuk[0]})
+					and 
+					  County in (select JiyukName from jiyuk where JiyukNumber in (${jiyuk[0]} ))
+ 
+</select>
+
+<select id="getPartJiyuk2"  parameterType="bu.main.BunyangVO" resultType="bu.main.BunyangVO">
+
+			select * from bunyang
+				where City = (select allJiyuk from jiyuk where JiyukNumber=${jiyuk[0]})
+					and 
+					  County in (select JiyukName from jiyuk where JiyukNumber in (${jiyuk[0]}, ${jiyuk[1]} ))
+ 
+</select>
+
+<select id="getPartJiyuk3"  parameterType="bu.main.BunyangVO" resultType="bu.main.BunyangVO">
+
+			select * from bunyang
+				where City = (select allJiyuk from jiyuk where JiyukNumber=${jiyuk[0]})
+					and 
+					  County in (select JiyukName from jiyuk where JiyukNumber in (${jiyuk[0]}, ${jiyuk[1]}, ${jiyuk[2]} ))
+ 
+</select>
+
+<select id="getbunyangInfo"  parameterType="bu.main.BunyangVO" resultType="bu.main.BunyangVO">
+
+			select * from bunyang where ApartmentName = #{apartmentName} and ProductType = #{productType}
+</select>
+
+
+
+<!-- <insert id="userLogOut" parameterType="String"> -->
+<!--     	INSERT INTO COM_LOGINOUT (USERNO, LTYPE, LDATE) -->
+<!--     	 	              VALUES (#{userno}, 'O', NOW() ); -->
+<!--     </insert>  -->
+
+</mapper>

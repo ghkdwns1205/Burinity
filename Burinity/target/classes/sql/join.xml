@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="join">
+
+<select id="insertNewMember"  parameterType="bu.user.UserVO" >
+
+ 	insert into user (userid,userpass,name,email,gender) 
+ 	   values
+ 	    (#{userid},#{userpass},#{name},#{email},#{gender})
+
+</select>
+
+<select id="insertNaverMember"  parameterType="bu.user.UserVO" >
+
+ 	insert into user (userid,userpass,name,email,gender,category) 
+ 	   values
+ 	    (#{userid},#{userpass},#{name},#{email},#{gender},#{category})
+
+</select>
+
+<select id="idCheck"  parameterType="bu.user.UserVO" resultType="Integer" >
+
+	SELECT COUNT(*)
+          FROM user where userid = #{userid}
+          
+</select>
+
+</mapper>

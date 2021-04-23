@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="login">
+
+<select id="selectMemberLogin"  parameterType="bu.user.LoginVO" resultType="bu.user.UserVO" >
+
+ SELECT AUTHORITY, USERID, NAME, EMAIL, GENDER
+          FROM user US
+         WHERE US.FLAG='Y' 
+           AND US.USERID = #{userid} AND USERPASS=#{userpass}
+
+</select>
+
+<!-- <insert id="userLogOut" parameterType="String"> -->
+<!--     	INSERT INTO COM_LOGINOUT (USERNO, LTYPE, LDATE) -->
+<!--     	 	              VALUES (#{userno}, 'O', NOW() ); -->
+<!--     </insert>  -->
+
+</mapper>
